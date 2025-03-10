@@ -16,6 +16,7 @@ There are three projects:
 3. Mapbox 2: Map visualisations showing Population Reference Points and allowing detailed city explorations on the Mapbox 
    
    -Goal: to observe where Population Reference Points (including People of Concerns) locate
+   
    -Outcome: https://api.mapbox.com/styles/v1/shuyucathy/cm7wbeh1e00pz01sd129l91rq.html?title=view&access_token=pk.eyJ1Ijoic2h1eXVjYXRoeSIsImEiOiJjbTd1cnU1engwMnhsMmtxdWtlb3Y0OXRxIn0.1GHApXadfjRjPkm4X_xAdA&zoomwheel=true&fresh=true#2/38/-34
      -Utilisation: users can observe the travel transitions in red dots, the other colored dots being the population centroids search for     
                   cities' names, zoom in and zoom out

@@ -27,9 +27,9 @@ There are three projects:
    
      - Utilisation:
       
-      -  users can observe the travel transitions in red dots, the other colored dots being the population centroids search for     
+         -  users can observe the travel transitions in red dots, the other colored dots being the population centroids search for     
                   cities' names, zoom in and zoom out
 
-      - users can also use control + left click to change the view to be 3D and observe the urban planning including the buildings and routes, with the dots that show transitions and PRPs  
+         - users can also use control + left click to change the view to be 3D and observe the urban planning including the buildings and routes, with the dots that show transitions and PRPs  
    
    - Result: found out the urban planning of places in details and the areas that need more urbanising attentions.

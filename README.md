@@ -21,6 +21,11 @@ There are three projects:
    
    -Outcome: https://api.mapbox.com/styles/v1/shuyucathy/cm7wbeh1e00pz01sd129l91rq.html?title=view&access_token=pk.eyJ1Ijoic2h1eXVjYXRoeSIsImEiOiJjbTd1cnU1engwMnhsMmtxdWtlb3Y0OXRxIn0.1GHApXadfjRjPkm4X_xAdA&zoomwheel=true&fresh=true#2/38/-34
    
-     -Utilisation: users can observe the travel transitions in red dots, the other colored dots being the population centroids search for     
+     -Utilisation:
+      
+      -  users can observe the travel transitions in red dots, the other colored dots being the population centroids search for     
                   cities' names, zoom in and zoom out
+
+      - users can also use control + left click to change the view to be 3D and observe the urban planning including the buildings and routes, with the dots that show transitions and PRPs  
+   
    -Result: found out the urban planning of places in details and the areas that need more urbanising attentions.

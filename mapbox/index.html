@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Demo: Show changes over time with Mapbox GL JS</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="./data.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 20px;
+        line-height: 30px;
+      }
+
+      h2 {
+        font-size: 14px;
+        line-height: 20px;
+        margin-bottom: 10px;
+      }
+
+      a {
+        text-decoration: none;
+        color: #2dc4b2;
+      }
+
+      #console {
+        position: absolute;
+        margin: 10px;
+        width: 240px;
+        background-color: white;
+        padding: 10px 20px;
+      }
+
+      .session {
+        margin-bottom: 20px;
+      }
+
+      .row {
+        height: 12px;
+        width: 100%;
+      }
+
+      .colors {
+        background: linear-gradient(
+          to right,
+          #2dc4b2,
+          #3bb3c3,
+          #669ec4,
+          #8b88b6,
+          #a2719b,
+          #aa5e79
+        );
+        margin-bottom: 5px;
+      }
+
+      .label {
+        width: 15%;
+        display: inline-block;
+        text-align: center;
+      }
+    </style>
+    <script
+      src="https://js.sentry-cdn.com/9c5feb5b248b49f79a585804c259febc.min.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <div id="console">
+      <h1>Population growth</h1>
+
+      <div class="session">
+        <h2>Population</h2>
+        <div class="row colors"></div>
+        <div class="row labels">
+          <div class="label">0</div>
+          <div class="label">1W</div>
+          <div class="label">2w</div>
+          <div class="label">6w</div>
+          <div class="label">10w</div>
+          <div class="label">20w+</div>
+        </div>
+      </div>
+      <div class="session">
+        <h2>Population year: <label id="active-hour">1950</label></h2>
+        <input
+          id="slider"
+          class="row"
+          type="range"
+          min="1"
+          max="15"
+          step="1"
+          value="0"
+        />
+      </div>
+      <div class="">
+        <div class="">0:0~10000</div>
+        <div class="">1:10000~20000</div>
+        <div class="">2:20000~60000</div>
+        <div class="">3:60000~100000</div>
+        <div class="">4:100000~200000</div>
+        <div class="">5:200000~</div>
+      </div>
+    </div>
+    <script>
+      mapboxgl.accessToken =
+        'pk.eyJ1Ijoic2h1eXVjYXRoeSIsImEiOiJjbTd2em1yZXYwMGJnMmxyMnlvczZsdWdnIn0.oxiem6I-gWyokH-6ajgQxg'
+      const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v11',
+        center: [8.5, 23.44],
+        zoom: 4,
+      })
+
+      map.on('load', () => {
+        map.addLayer({
+          id: 'collisions',
+          type: 'circle',
+          source: {
+            type: 'geojson',
+            data: dataGeojson, // replace this with the url of your own geojson
+          },
+          // filter: ['has', '1950'],
+          // filter: ['all', ['has', '1950'], ['>', ['get', '1950'], 0]], // 初始过滤条件‌:ml-citation{ref="2,3" data="citationList"}
+          filter: [
+            'all',
+            ['has', '1950'], // 存在1950字段‌:ml-citation{ref="1,2" data="citationList"}
+            // ['>', ['get', '1950'], 0], // 值必须大于0‌:ml-citation{ref="1,3" data="citationList"}
+          ],
+          paint: {
+            'circle-radius': [
+              'interpolate',
+              ['linear'],
+              ['number', ['get', '1950']],
+              10000,
+              2,
+              20000,
+              4,
+              60000,
+              8,
+              100000,
+              12,
+              200000,
+              20,
+            ],
+            'circle-color': [
+              'interpolate',
+              ['linear'],
+              ['number', ['get', '1950']],
+              0,
+              '#2DC4B2',
+              10000,
+              '#3BB3C3',
+              20000,
+              '#669EC4',
+              60000,
+              '#8B88B6',
+              100000,
+              '#A2719B',
+              200000,
+              '#AA5E79',
+            ],
+            'circle-opacity': 0.8,
+          },
+          filter: ['all'],
+        })
+
+        // update hour filter when the slider is dragged
+        document.getElementById('slider').addEventListener('input', (event) => {
+          console.log(event.target.value)
+          // const hour = parseInt(event.target.value)
+          const yearList = {
+            1: '1950',
+            2: '1960',
+            3: '1970',
+            4: '1980',
+            5: '1990',
+            6: '2000',
+            7: '2010',
+            8: '2015',
+            9: '2020',
+            10: '2025',
+            11: '2030',
+            12: '2035',
+            13: '2040',
+            14: '2045',
+            15: '2050',
+          }
+          switchYear(yearList[event.target.value])
+
+          document.getElementById('active-hour').innerText =
+            yearList[event.target.value]
+        })
+
+        function switchYear(targetYear) {
+          map.setFilter('collisions', [
+            'all',
+            ['has', targetYear],
+            // ['>', ['get', targetYear], 0],
+          ])
+          // 更新 circle-radius 表达式中的属性字段
+          map.setPaintProperty('collisions', 'circle-radius', [
+            'interpolate',
+            ['linear'],
+            ['number', ['get', targetYear]], // 动态替换属性名
+            10000,
+            2,
+            20000,
+            4,
+            60000,
+            8,
+            100000,
+            11,
+            200000,
+            16,
+          ])
+
+          // 更新 circle-color 表达式中的属性字段
+          map.setPaintProperty('collisions', 'circle-color', [
+            'interpolate',
+            ['linear'],
+            ['number', ['get', targetYear]], // 动态替换属性名
+            0,
+            '#2DC4B2',
+            10000,
+            '#3BB3C3',
+            20000,
+            '#669EC4',
+            40000,
+            '#8B88B6',
+            60000,
+            '#A2719B',
+            100000,
+            '#AA5E79',
+          ])
+        }
+      })
+    </script>
+  </body>
+</html>
